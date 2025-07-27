@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LieBot</title>
+</head>
+<body>
+    <header>
+        <h1>LieBot</h1>
+        <nav>
+            <a href="{% url 'chatbot:home' %}">Home</a> |
+            <a href="{% url 'chatbot:contact' %}">Contact Us</a>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    
+</body>
+</html>
