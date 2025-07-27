@@ -6,3 +6,9 @@ def home(request):
 
 def contact(request):
     return render(request, 'LieBot/contactus.html')
+
+def login(request):
+    return render(request, 'LieBot/login.html')
+
+def signup(request):
+    return render(request, 'LieBot/signup.html')    
