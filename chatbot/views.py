@@ -21,14 +21,13 @@ def contact(request):
 
 
 def register(request):
-    #BASED ON CODE FROM DJANGO 
+    #BASED ON CODE FROM DJANGO without profile included as that is not required for the scope of our project
     # A boolean value for telling the template
     # whether the registration was successful.
     # Set to False initially. Code changes value to
     # True when registration succeeds.
     registered = False
 
-    # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm

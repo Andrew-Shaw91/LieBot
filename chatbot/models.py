@@ -1,10 +1,10 @@
 from django.db import models
-
-class Chat(models.Model):
-  prompt = models.CharField(max_length = 255)
-  answer = models.CharField(max_length = 255)
+from django.contrib.auth.models import User
 
 class Account(models.Model):
-  username = models.CharField(max_length = 30)
-  password = models.CharField(max_length = 30)
-  savedChats = models.ForeignKey(Chat, on_delete = models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+class Chat(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='saved_chats')
+    prompt = models.TextField()
+    answer = models.TextField()
