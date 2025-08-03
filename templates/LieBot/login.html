@@ -11,7 +11,8 @@
     {% csrf_token %}
     Username: <input type="text" name="username" value="" size="50" />
     <br />
-    Password: <input type="password" name="password" value="" size="50" />
+    Password: <input type="password" name="password" id="login_password" value="" size="50" />
+    <input type="checkbox" id="toggle_password"> Show Password
     <br />
     <input type="submit" value="submit" />
     </form>
