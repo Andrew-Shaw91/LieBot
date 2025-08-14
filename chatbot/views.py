@@ -18,7 +18,13 @@ def home(request):
 def contact(request):
     return render(request, 'LieBot/contactus.html')
 
-
+def get_chat_response(request):
+    user_message = request.GET.get('message', '')
+    if user_message:
+        bot_reply = query_llm(user_message)
+    else:
+        bot_reply = "Say something, twin 😏"
+    return JsonResponse({'response': bot_reply})
 
 def register(request):
     #BASED ON CODE FROM DJANGO without profile included as that is not required for the scope of our project

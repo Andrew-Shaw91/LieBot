@@ -8,5 +8,6 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('login/', views.user_login, name='login'),
     path('register/', views.register, name='register'),
+    path('get-chat-response/', views.get_chat_response, name='get_chat_response'),
     
 ]

@@ -1,13 +1,56 @@
-{% extends "LieBot/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LieBot Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        #chat-box { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; }
+        #user-input { width: 80%; padding: 10px; }
+        #send-btn { padding: 10px; }
+        .message { margin: 5px 0; }
+        .user { color: blue; }
+        .bot { color: green; }
+    </style>
+</head>
+<body>
+    <h1>💬 LieBot Chat</h1>
 
-{% block content %}
-    <p>Welcome to LieBot, your one-stop solution for all your lying needs.</p>
+    <div id="chat-box"></div>
 
-{% if user.is_authenticated %}
-Hello {{ user.username }}!
-{% else %}
-hello stranger.
-{% endif %}
+    <input type="text" id="user-input" placeholder="Type a message..." />
+    <button id="send-btn">Send</button>
 
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
 
-{% endblock %}
+        function addMessage(sender, text) {
+            const msg = document.createElement('div');
+            msg.classList.add('message');
+            msg.classList.add(sender);
+            msg.textContent = sender === 'user' ? "You: " + text : "Bot: " + text;
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight; // scroll to bottom
+        }
+
+        sendBtn.addEventListener('click', () => {
+            const message = userInput.value.trim();
+            if (!message) return;
+            addMessage('user', message);
+            userInput.value = '';
+
+            fetch(`/get-chat-response/?message=${encodeURIComponent(message)}`)
+                .then(response => response.json())
+                .then(data => addMessage('bot', data.response))
+                .catch(err => addMessage('bot', "Error: " + err));
+        });
+
+        // allow pressing Enter to send message
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendBtn.click();
+        });
+    </script>
+</body>
+</html>
