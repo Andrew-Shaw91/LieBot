@@ -2,23 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LieBot Chat</title>
+    <title>{% block title %}LieBot Chat{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
-    <h1>💬 LieBot Chat</h1>
+    <header>
+        <h1>💬 LieBot Chat</h1>
+        <nav>
+            <a href="{% url 'chatbot:login' %}">Login</a>
+            <a href="{% url 'chatbot:register' %}">Register</a>
+            <a href="{% url 'chatbot:home' %}">Chat</a>
+        </nav>
+        <hr>
+    </header>
 
-    <nav>
-        <a href="{% url 'chatbot:login' %}">Login</a>
-        <a href="{% url 'chatbot:register' %}">Register</a>
-        <a href="{% url 'chatbot:home' %}">Chat</a>
-    </nav>
-    
-    <div id="chat-box"></div>
+    <main>
+        {% block content %}
+        <!-- Default chat content for the home page -->
+        <div id="chat-box"></div>
 
-    <input type="text" id="user-input" placeholder="Type a message..." />
-    <button id="send-btn">Send</button>
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button id="send-btn">Send</button>
+        {% endblock %}
+    </main>
 
     <script>
         function getCookie(name) {
@@ -72,11 +79,9 @@
             .then(response => response.json())
             .then(data => {
                 addMessage('bot', data.response);
-
-                // Re-enable input & button after bot reply
                 userInput.disabled = false;
                 sendBtn.disabled = false;
-                userInput.focus(); // optional, refocus input
+                userInput.focus();
             })
             .catch(err => {
                 addMessage('bot', "Error: " + err);
@@ -84,7 +89,6 @@
                 sendBtn.disabled = false;
             });
         });
-
 
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendBtn.click();
