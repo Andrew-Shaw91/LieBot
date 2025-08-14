@@ -22,35 +22,60 @@
     <button id="send-btn">Send</button>
 
     <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
-
+    
         function addMessage(sender, text) {
             const msg = document.createElement('div');
             msg.classList.add('message');
             msg.classList.add(sender);
             msg.textContent = sender === 'user' ? "You: " + text : "Bot: " + text;
             chatBox.appendChild(msg);
-            chatBox.scrollTop = chatBox.scrollHeight; // scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
-
+    
         sendBtn.addEventListener('click', () => {
             const message = userInput.value.trim();
             if (!message) return;
             addMessage('user', message);
             userInput.value = '';
-
-            fetch(`/get-chat-response/?message=${encodeURIComponent(message)}`)
-                .then(response => response.json())
-                .then(data => addMessage('bot', data.response))
-                .catch(err => addMessage('bot', "Error: " + err));
+    
+            fetch('/get-chat-response/', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({ message })
+            })
+            .then(response => response.json())
+            .then(data => addMessage('bot', data.response))
+            .catch(err => addMessage('bot', "Error: " + err));
         });
-
-        // allow pressing Enter to send message
+    
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendBtn.click();
         });
     </script>
+    
+    
+    
 </body>
 </html>

@@ -1,8 +1,9 @@
 from gpt4all import GPT4All
+from pathlib import Path
 import os
 
 model_name = "Meta-Llama-3-8B-Instruct.Q4_0.gguf"
-model_path = os.path.join(os.getcwd(), "gpt4all_models")
+model_path = model_path = Path(__file__).parent / "gpt4all_models"
 
 model = GPT4All(model_name=model_name, model_path=model_path, allow_download=True)
 

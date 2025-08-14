@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from chatbot.forms import UserForm
-
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .liebot_interface import query_llm
 
 from django.http import HttpResponse
+from django.http import JsonResponse
 
 from django.shortcuts import render
 
@@ -18,13 +21,18 @@ def home(request):
 def contact(request):
     return render(request, 'LieBot/contactus.html')
 
+@csrf_exempt 
 def get_chat_response(request):
-    user_message = request.GET.get('message', '')
-    if user_message:
-        bot_reply = query_llm(user_message)
-    else:
-        bot_reply = "Say something, twin 😏"
-    return JsonResponse({'response': bot_reply})
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_message = data.get('message', '')
+            bot_reply = query_llm(user_message) if user_message else "Say something, twin 😏"
+            return JsonResponse({'response': bot_reply})
+        except Exception as e:
+            return JsonResponse({'response': f"Error: {e}"})
+    return JsonResponse({'response': 'Invalid request method'})
+
 
 def register(request):
     #BASED ON CODE FROM DJANGO without profile included as that is not required for the scope of our project
