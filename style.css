@@ -1,0 +1,38 @@
+body {
+background-color: #282828;
+color: white;
+font-family: Arial, sans-serif; 
+margin: 30px;
+}
+
+h1{
+background-color: #181818;
+}
+
+#chat-box { 
+border: 1px solid #ccc; 
+padding: 10px; 
+height: 400px; 
+overflow-y: scroll; 
+}
+
+#user-input { 
+width: 80%; 
+padding: 10px; 
+}
+
+#send-btn { 
+padding: 10px; 
+}
+
+.message { 
+margin: 5px 0; 
+}
+
+.user { 
+color: blue;
+}
+
+.bot { 
+color: green; 
+}
