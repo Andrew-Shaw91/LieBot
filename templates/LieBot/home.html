@@ -5,19 +5,16 @@
     <title>LieBot Chat</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
-    <style>
-        body { font-family: Arial, sans-serif; margin: 30px; }
-        #chat-box { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; }
-        #user-input { width: 80%; padding: 10px; }
-        #send-btn { padding: 10px; }
-        .message { margin: 5px 0; }
-        .user { color: blue; }
-        .bot { color: green; }
-    </style>
 </head>
 <body>
     <h1>💬 LieBot Chat</h1>
 
+    <nav>
+        <a href="{% url 'chatbot:login' %}">Login</a>
+        <a href="{% url 'chatbot:register' %}">Register</a>
+        <a href="{% url 'chatbot:home' %}">Chat</a>
+    </nav>
+    
     <div id="chat-box"></div>
 
     <input type="text" id="user-input" placeholder="Type a message..." />
@@ -39,11 +36,11 @@
             return cookieValue;
         }
         const csrftoken = getCookie('csrftoken');
-    
+
         const chatBox = document.getElementById('chat-box');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
-    
+
         function addMessage(sender, text) {
             const msg = document.createElement('div');
             msg.classList.add('message');
@@ -52,13 +49,13 @@
             chatBox.appendChild(msg);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
-    
+
         sendBtn.addEventListener('click', () => {
             const message = userInput.value.trim();
             if (!message) return;
             addMessage('user', message);
             userInput.value = '';
-    
+
             fetch('/get-chat-response/', {
                 method: 'POST',
                 headers: { 
@@ -71,13 +68,10 @@
             .then(data => addMessage('bot', data.response))
             .catch(err => addMessage('bot', "Error: " + err));
         });
-    
+
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendBtn.click();
         });
     </script>
-    
-    
-    
 </body>
 </html>

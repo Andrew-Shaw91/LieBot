@@ -1,0 +1,3 @@
+Ok so first you need to install all the installations in requirements.txt, 
+then run main.py to check your able to download the model,
+then after you can run in the terminal python manage.py runserver and from there you launch the webapp
