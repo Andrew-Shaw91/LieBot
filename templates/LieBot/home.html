@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>LieBot Chat</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <style>
         body { font-family: Arial, sans-serif; margin: 30px; }
         #chat-box { border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: scroll; }
@@ -46,7 +48,7 @@
             const msg = document.createElement('div');
             msg.classList.add('message');
             msg.classList.add(sender);
-            msg.textContent = sender === 'user' ? "You: " + text : "Bot: " + text;
+            msg.innerText = sender === 'user' ? "You: " + text : "Bot: " + text;
             chatBox.appendChild(msg);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
